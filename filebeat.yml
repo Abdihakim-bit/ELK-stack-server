@@ -1,1 +1,45 @@
 # Include the following in the filebeat configuration file found in: /etc/filebeat/filebeat.yml
+
+# ------------------------------ Filebeat Inputs -------------------------------
+filebeat.inputs:
+
+# filestream is an input for collecting log messages from files.
+- type: log
+
+  # Unique ID among all inputs, an ID is required.
+  id: apache-logs
+
+  # Change to true to enable this input configuration.
+  enabled: true
+
+  # Paths that should be crawled and fetched. Parse the apache logs into a json file and Include its path here.
+  paths:
+    - /var/log/apache2/access_json.log
+
+  # Optional additional fields. These fields can be freely picked
+  # to add additional information to the crawled log files for filtering
+  fields:
+    log_type: apache_access
+
+- type: log
+
+  # Unique ID among all inputs, an ID is required.
+  id: auth-logs
+
+  # Change to true to enable this input configuration.
+  enabled: true
+
+  # Paths that should be crawled and fetched. Parse the auth logs into a json file and Include its path here.
+  paths:
+    - /var/log/auth_json.log
+
+  # Optional additional fields. These fields can be freely picked
+  # to add additional information to the crawled log files for filtering
+  fields:
+    log_type: auth_logs
+
+
+# ------------------------------ Logstash Output -------------------------------
+output.logstash:
+  # The Logstash hosts
+  hosts: ["ELK_SERVER_IP:5044"]
